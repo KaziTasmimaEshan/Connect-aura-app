@@ -1,0 +1,17 @@
+<aura:component controller="ControllerForAll" implements="flexipage:availableForAllPageTypes" access="global" >
+	<!--attributes-->
+    <aura:attribute name="connections" type="Connect__c[]"/>
+    <aura:attribute name="columns" type="List"/>
+    
+    <aura:method name="refreshTable" action="{!c.refreshTable}" />
+       
+    <!--Connect table in UI-->
+    <lightning:card title="Connect Table">
+        <lightning:datatable
+            keyField="Name"
+            data="{!v.connections}"
+            columns="{!v.columns}"
+            hideCheckboxColumn="true"
+        />
+    </lightning:card>
+</aura:component>
