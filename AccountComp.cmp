@@ -1,0 +1,19 @@
+<aura:component controller="ControllerForAll" implements="flexipage:availableForAllPageTypes" access="global">
+    <!--attributes-->
+    <aura:attribute name="accounts" type="Account[]"/>
+    <aura:attribute name="columns" type="List"/>
+
+    <!--Handler method for component initialization-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!--Account table in UI-->
+    <lightning:card title="Account Table">
+        <lightning:datatable
+            keyField="Id"
+            data="{!v.accounts}"
+            columns="{!v.columns}"
+            hideCheckboxColumn="true"
+        />
+    </lightning:card>
+
+</aura:component>
