@@ -1,0 +1,77 @@
+<aura:component controller="ControllerForAll" implements="flexipage:availableForAllPageTypes" access="global">
+
+    <!-- Attributes -->
+    <aura:attribute name="isModalOpen" type="Boolean" default="false"/>
+    <aura:attribute name="selectedContactId" type="String" />
+    <aura:attribute name="accountNameFromContact" type="String" />
+    <aura:attribute name="selectedAccountId" type="String" />
+    <aura:attribute name="selectedOppId" type="String" />
+    <aura:attribute name="contactOptions" type="List" />
+    <aura:attribute name="accountOptions" type="List" />
+    <aura:attribute name="oppOptions" type="List" />
+    <aura:attribute name="showAccountPicklist" type="Boolean" default="false"/>
+    <aura:attribute name="disableAccountInput" type="Boolean" default="false"/>
+    
+    
+    <!--Handler method for connect table initialization-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Connect Button -->
+    <lightning:card>
+        <lightning:button variant="brand" label="Connect" onclick="{!c.openModal}" />
+    </lightning:card>
+    
+    <c:ConnectTable aura:id="connTable" />
+    <c:ContactComp aura:id="contTable" />
+
+    <!-- Modal -->
+    <aura:if isTrue="{!v.isModalOpen}">
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <!-- Header -->
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Connect Contact to Account</h2>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    
+                    <!-- Contact Picklist -->
+                    <lightning:select aura:id="contactPicklist" label="Select Contact" onchange="{!c.handleContactChange}">
+                        <aura:iteration items="{!v.contactOptions}" var="con">
+                            <option value="{!con.Id}">{!con.Name}</option>
+                        </aura:iteration>
+                    </lightning:select>
+
+                    <!-- Account Field or Picklist -->
+                    <aura:if isTrue="{!v.showAccountPicklist}">
+                        <lightning:select aura:id="accPicklist" label="Select Account" onchange="{!c.handleAccountPicklistChange}">
+                            <aura:iteration items="{!v.accountOptions}" var="acc">
+                                <option value="{!acc.Id}">{!acc.Name}</option>
+                            </aura:iteration>
+                        </lightning:select>
+                    </aura:if>
+                    <aura:if isTrue="{!not(v.showAccountPicklist)}">
+                        <lightning:input label="Account Name" value="{!v.accountNameFromContact}" disabled="{!v.disableAccountInput}" />
+                    </aura:if>
+                    
+                    <!-- Opportunity Picklist -->
+                    <lightning:select aura:id="oppPicklist" label="Select Opportunity" onchange="{!c.handleOppChange}">
+                        <aura:iteration items="{!v.oppOptions}" var="opp">
+                            <option value="{!opp.Id}">{!opp.Name}</option>
+                        </aura:iteration>
+                    </lightning:select>
+                    
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.closeModal}" />
+                    <lightning:button variant="brand" label="Save" onclick="{!c.save}" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>
